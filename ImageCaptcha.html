@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap 4 Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/common_lib/bootstrap-4.3.1/css/bootstrap.min.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+        
+        #cover {
+            background: #222 url('') center center no-repeat;
+            background-size: cover;
+            height: 100%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        #cover-caption {
+            width: 100%;
+        }
+    </style>
+
+
+</head>
+
+<body onload="validate_captcha()">
+    <section id="cover">
+        <div id="cover-caption">
+            <div id="container" class="container">
+                <div class="row text-white">
+                    <div class="col-sm-6 offset-sm-3 text-center">
+                        <h1 class="display-4">Bootstrap 4</h1>
+                        <div class="info-form">
+                            <form method="POST" action="/" class="form-inlin justify-content-center">
+                                <div class="form-group">
+                                    <input type="text" id="name" class="form-control" name="username" placeholder="Enter Username">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="password" class="form-control" name="password" placeholder="Enter Password">
+                                </div>
+                                <div class="captcha">
+                                    <canvas id="myCanvas" width="150" height="50" style="border:1px solid #000000;">
+                                        </canvas>
+                                </div>
+                                <div class="form-group">
+
+                                    <input type="text" id="captcha" class="form-control" name="user_captcha" placeholder="enter captcha">
+
+                                    <input type="hidden" id="userCaptcha" name="captcha_Origing">
+
+                                </div>
+                                <button type="submit" class="btn btn-success" onsubmit="validate_captcha()">okay, go!</button>
+                            </form>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/common_lib/jquery-3.3.1.min.js"></script>
+    <script src="/common_lib/popper.min.js"></script>
+    <script src="/common_lib/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function validate_captcha() {
+            var captcha = document.getElementById('captcha');
+
+            // to generate radom text to canvas
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&/+';
+            var charactersLength = characters.length;
+            for (var i = 0; i < 6; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+
+            //this line of code put result to the input hidden atribute to validate captcha
+            document.getElementById("userCaptcha").value = result;
+
+            // array list for colors
+            var colors = ["Red", "green", "yellow", "blue", "purple", "olive"];
+
+            // to generate 1-5 random numbers for applying random colors to canvas text and font family of
+            random_color = Math.floor(Math.random() * 6);
+
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            ctx.font = "35px Charcoal";
+            ctx.fillStyle = colors[random_color]; // random background color change
+            ctx.fillRect(0, 0, 150, 75);
+            ctx.strokeText(result, 5, 35); // random text
+
+            //To draw some cross line on text in canvas
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(300, 100);
+            ctx.stroke();
+            ctx.moveTo(150, 10);
+            ctx.lineTo(80, 40);
+            ctx.stroke();
+
+        }
+    </script>
+</body>
+
+</html>
